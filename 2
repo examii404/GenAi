@@ -1,0 +1,16 @@
+def generate_ngrams(sentence, n):
+    words = sentence.lower().split()  # Tokenize the sentence into words
+    ngrams = []
+    for i in range(len(words) - n + 1):
+        ngram = tuple(words[i:i + n])  # Create an n-gram as a tuple
+        ngrams.append(ngram)
+    return ngrams
+
+# Example usage:
+sentence = "The quick brown fox jumps over the lazy dog."
+n = 3
+ngrams = generate_ngrams(sentence, n)
+
+print(f"{n}-grams:")
+for gram in ngrams:
+    print(gram)
