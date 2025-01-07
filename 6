@@ -1,0 +1,24 @@
+import numpy as np
+
+def create_one_hot_encodings(corpus):
+    # Create vocabulary with unique words
+    vocabulary = {word: idx for idx, word in enumerate(set(" ".join(corpus).lower().split()))}
+    V = len(vocabulary)
+
+    # Generate one-hot encodings
+    one_hot_encodings = {word: np.eye(V)[idx] for word, idx in vocabulary.items()}
+    return vocabulary, one_hot_encodings
+
+# Example usage:
+corpus = [
+    "I love machine learning",
+    "Machine learning is amazing",
+    "I love learning new things"
+]
+
+vocabulary, one_hot_encodings = create_one_hot_encodings(corpus)
+
+print("Vocabulary:", vocabulary)
+print("\nOne-Hot Encodings:")
+for word, one_hot_vector in one_hot_encodings.items():
+    print(f"Word: '{word}' - One-Hot Vector: {one_hot_vector}")
