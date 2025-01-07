@@ -1,0 +1,29 @@
+def generate_cbow_pairs(sentences, window_size):
+    # Build vocabulary with unique words
+    vocabulary = {word: idx for idx, word in enumerate(set(" ".join(sentences).lower().split()))}
+    
+    # Generate CBOW pairs
+    training_pairs = []
+    for sentence in sentences:
+        words = sentence.lower().split()
+        for i, target_word in enumerate(words):
+            start, end = max(0, i - window_size), min(len(words), i + window_size + 1)
+            context_words = [words[j] for j in range(start, end) if j != i]
+            if context_words:
+                training_pairs.append((tuple(context_words), target_word))
+    
+    return vocabulary, training_pairs
+
+# Example usage:
+sentences = [
+    "I love machine learning",
+    "Machine learning is amazing",
+    "I love learning new things"
+]
+window_size = 2
+vocabulary, training_pairs = generate_cbow_pairs(sentences, window_size)
+
+print("Vocabulary:", vocabulary)
+print("\nCBOW Training Pairs:")
+for pair in training_pairs:
+    print(f"Context: {pair[0]}, Target: {pair[1]}")
