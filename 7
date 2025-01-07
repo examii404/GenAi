@@ -1,0 +1,29 @@
+def generate_skip_gram_pairs(sentences, window_size):
+    # Build vocabulary with unique words
+    vocabulary = {word: idx for idx, word in enumerate(set(" ".join(sentences).lower().split()))}
+    
+    # Generate skip-gram pairs
+    training_pairs = []
+    for sentence in sentences:
+        words = sentence.lower().split()
+        for i, target_word in enumerate(words):
+            start, end = max(0, i - window_size), min(len(words), i + window_size + 1)
+            for j in range(start, end):
+                if i != j:  # Exclude the target word itself
+                    training_pairs.append((target_word, words[j]))
+    
+    return vocabulary, training_pairs
+
+# Example usage:
+sentences = [
+    "I love machine learning",
+    "Machine learning is amazing",
+    "I love learning new things"
+]
+window_size = 2
+vocabulary, training_pairs = generate_skip_gram_pairs(sentences, window_size)
+
+print("Vocabulary:", vocabulary)
+print("\nSkip-Gram Training Pairs:")
+for pair in training_pairs:
+    print(pair)
