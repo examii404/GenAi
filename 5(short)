@@ -1,0 +1,25 @@
+import numpy as np
+
+def create_embedding_matrix_with_pretrained(corpus, pretrained_embeddings, embedding_dim):
+    vocabulary = {word: idx for idx, word in enumerate(set(" ".join(corpus).lower().split()))}
+    E = np.zeros((len(vocabulary), embedding_dim))
+
+    for word, idx in vocabulary.items():
+        E[idx] = np.array(pretrained_embeddings.get(word, np.random.rand(embedding_dim)))
+
+    def get_word_vector(word):
+        return E[vocabulary[word.lower()]] if word.lower() in vocabulary else np.zeros(embedding_dim)
+
+    return E, vocabulary, get_word_vector
+
+# Example usage:
+corpus = ["I love machine learning", "Machine learning is amazing", "I love learning new things"]
+pretrained_embeddings = {"machine": [0.1, 0.2, 0.3], "learning": [0.2, 0.3, 0.4], "amazing": [0.3, 0.4, 0.5], "love": [0.4, 0.5, 0.6]}
+embedding_dim = 3
+
+E, vocabulary, get_word_vector = create_embedding_matrix_with_pretrained(corpus, pretrained_embeddings, embedding_dim)
+
+print("Vocabulary:", vocabulary)
+print("Embedding Matrix:\n", E)
+print("Embedding for 'machine':", get_word_vector("machine"))
+print("Embedding for 'unknown':", get_word_vector("unknown"))
